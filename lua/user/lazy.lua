@@ -5,7 +5,7 @@ require("lazy").setup({
     dependencies = {
       -- LSP Support
       { "neovim/nvim-lspconfig" },             -- Required
-      { "williamboman/mason.nvim" },           -- Optional
+      { "williamboman/mason.nvim"},           -- Optional
       { "williamboman/mason-lspconfig.nvim" }, -- Optional
 
       -- Autocompletion
@@ -170,4 +170,12 @@ require("lazy").setup({
   { "rebelot/heirline.nvim" },
   { dir = "~/perso/aws_nvim" },
   { dir = "~/perso/foo" },
+  {"lervag/vimtex"},
+  {"ellisonleao/glow.nvim", config = true, cmd = "Glow"},
+  {
+    "iamcco/markdown-preview.nvim",
+    ft = "markdown",
+    -- build = "cd app && yarn install",
+    build = ":call mkdp#util#install()",
+  },
 })

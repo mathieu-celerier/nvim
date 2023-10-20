@@ -23,6 +23,7 @@ wk.register({
       l = { ":Telescope loclist<CR>", "Open loclist using Telescope" },
       d = { "<cmd>lua vim.lsp.buf.definition()<CR>", "Go to definition" },
       D = { "<cmd>lua vim.lsp.buf.declaration()<CR>", "Go to declaration" },
+      f = { "<cmd>lua vim.lsp.buf.format()<CR>", "Format" },
       h = {
         function()
           vim.lsp.buf.hover()

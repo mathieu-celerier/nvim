@@ -14,6 +14,18 @@ vim.opt.rtp:prepend(lazypath)
 
 vim.g.mapleader = " "
 
+vim.g.vimtex_view_method = 'zathura'
+vim.g.vimtex_latexmk_build_dir = 'livepreview'
+vim.g.vimtex_compiler_latexmk = {
+  options = {
+    '-shell-escape',
+    '-synctex=1',
+    '-interaction=nonstopmode'
+  }
+}
+vim.g.vimtex_quickfix_mode = 2
+vim.g.vimtex_quickfix_open_on_warning = 0
+
 require("user.options")
 require("user.lazy")
 require("user.mappings")
