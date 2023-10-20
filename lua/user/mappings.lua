@@ -8,6 +8,7 @@ wk.register({
       s = { ":G<CR>", "Git status" },
       c = { ":Git commit<CR>", "Git commit" },
       b = { ":Telescope git_branches<CR>", "Git branches" },
+      h = { ":Gitsigns stage_hunk<CR>", "Stage hunk" },
     },
     e = { ":Neotree toggle<CR>", "Toggle file tree" },
     x = { "<cmd>lua MiniBufremove.delete()<CR>", "Close current buffer" },
@@ -25,12 +26,10 @@ wk.register({
       D = { "<cmd>lua vim.lsp.buf.declaration()<CR>", "Go to declaration" },
       f = { "<cmd>lua vim.lsp.buf.format()<CR>", "Format" },
       h = {
-        function()
-          vim.lsp.buf.hover()
-        end,
+        function() vim.lsp.buf.hover() end,
         "Toggle LSP hover",
       },
-      t = { "<cmd>TroubleToggle<CR>", "Toggle Trouble.nvim" }
+      t = { "<cmd>TroubleToggle<CR>", "Toggle Trouble.nvim" },
     },
     -- h = {
     -- 	name = "Harpoon",
@@ -43,9 +42,7 @@ wk.register({
     -- 	["4"] = { '<cmd>lua require("harpoon.ui").nav_file(4)<CR>', "Navigate to file 4" },
     -- },
     c = {
-      function()
-        require("Comment.api").toggle.linewise.current()
-      end,
+      function() require("Comment.api").toggle.linewise.current() end,
       "Comment current line",
     },
     d = {
@@ -64,6 +61,10 @@ wk.register({
 
 wk.register({
   ["<leader>"] = {
+    g = {
+      name = "Git",
+      h = { ":Gitsigns stage_hunk<CR>", "Stage hunk" },
+    },
     c = {
       "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
       "Comment selected block",
@@ -101,9 +102,7 @@ set("n", "<Tab>", ":BufferLineCycleNext<CR>", { silent = true, noremap = true })
 -- Autocmd
 --vim.cmd([[autocmd BufWritePre * lua vim.diagnostic.setloclist({open=false})]])
 vim.api.nvim_create_autocmd("BufWritePre", {
-  callback = function()
-    vim.diagnostic.setloclist({ open = false })
-  end,
+  callback = function() vim.diagnostic.setloclist({ open = false }) end,
 })
 -- vim.api.nvim_create_autocmd("BufWritePre", {
 -- 	callback = function()

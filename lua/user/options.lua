@@ -10,5 +10,3 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
-
-vim.opt.clipboard = "unnamed"

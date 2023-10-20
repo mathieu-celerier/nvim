@@ -43,8 +43,6 @@ require('lspconfig').clangd.setup({
 
 lsp.setup()
 
-vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
-
 vim.diagnostic.config({
   virtual_text = true,
   update_in_insert = true,
@@ -92,6 +90,7 @@ null_ls.setup({
 
 -- See mason-null-ls.nvim's documentation for more details:
 -- https://github.com/jay-babu/mason-null-ls.nvim#setup
+require("mason").setup()
 require("mason-null-ls").setup({
   ensure_installed = nil,
   automatic_installation = false, -- You can still set this to `true`
@@ -99,9 +98,9 @@ require("mason-null-ls").setup({
 })
 
 -- Required when `automatic_setup` is true
-require("mason-null-ls").setup_handlers()
+-- require("mason-null-ls").setup_handlers() -- Outdated ?
 
 require("mason-nvim-dap").setup({
   automatic_setup = true,
 })
-require("mason-nvim-dap").setup_handlers({})
+-- require("mason-nvim-dap").setup_handlers({})
