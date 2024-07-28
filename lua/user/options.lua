@@ -10,3 +10,9 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
+
+vim.filetype.add({
+  extensions = {
+    astro = "astro",
+  }
+})

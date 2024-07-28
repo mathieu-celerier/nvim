@@ -4,8 +4,8 @@ require("lazy").setup({
     branch = "v2.x",
     dependencies = {
       -- LSP Support
-      { "neovim/nvim-lspconfig" },             -- Required
-      { "williamboman/mason.nvim" },           -- Optional
+      { "neovim/nvim-lspconfig" }, -- Required
+      { "williamboman/mason.nvim" }, -- Optional
       { "williamboman/mason-lspconfig.nvim" }, -- Optional
 
       -- Autocompletion
@@ -97,7 +97,7 @@ require("lazy").setup({
   {
     "akinsho/bufferline.nvim",
     version = "v3.*",
-    dependencies = "nvim-tree/nvim-web-devicons",
+    dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin" },
     config = function() require("user.configs.bufferline") end,
   },
   {
@@ -186,6 +186,22 @@ require("lazy").setup({
         -- your neotest config here
         adapters = {
           require("neotest-go"),
+        },
+      })
+    end,
+  },
+  { "lervag/vimtex" },
+  {
+    "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("nvim-web-devicons").setup({
+        strict = true,
+        override_by_extensions = {
+          astro = {
+            icon = "",
+            color = "#EF8547",
+            name = "astro",
+          },
         },
       })
     end,

@@ -4,3 +4,11 @@ require("nvim-treesitter.configs").setup({
     enable = true,
   },
 })
+
+vim.filetype.add({
+  extensions = {
+    mdx = "mdx",
+  }
+})
+
+vim.treesitter.language.register("markdown", "mdx")

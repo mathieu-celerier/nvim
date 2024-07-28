@@ -22,6 +22,7 @@ wk.register({
       o = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Open LSP diagnostic window" },
       q = { "<cmd>lua vim.diagnostic.setloclist()<CR>", "Open loclist using split buffer" },
       l = { ":Telescope loclist<CR>", "Open loclist using Telescope" },
+      s = { ":Telescope lsp_document_symbols<CR>", "Open loclist using Telescope" },
       d = { "<cmd>lua vim.lsp.buf.definition()<CR>", "Go to definition" },
       D = { "<cmd>lua vim.lsp.buf.declaration()<CR>", "Go to declaration" },
       f = { "<cmd>lua vim.lsp.buf.format()<CR>", "Format" },

@@ -13,9 +13,7 @@ lsp.nvim_workspace()
 require("nvim-navic").setup({ highlight = true })
 
 lsp.on_attach(function(client, bufnr)
-  if client.server_capabilities.documentSymbolProvider then
-    require("nvim-navic").attach(client, bufnr)
-  end
+  if client.server_capabilities.documentSymbolProvider then require("nvim-navic").attach(client, bufnr) end
   lsp.default_keymaps({ buffer = bufnr })
   lsp.buffer_autoformat()
 end)
@@ -30,16 +28,25 @@ lsp.configure("tailwindcss", {
   },
 })
 
-require('lspconfig').clangd.setup({
+require("lspconfig").clangd.setup({
+  capabilities = require("cmp_nvim_lsp").default_capabilities(),
   cmd = {
-    'clangd',
-    '--background-index',
-    '--function-arg-placeholders',
-    '--completion-style=detailed',
-    '--header-insertion=never',
-    '--clang-tidy'
-  }
+    "clangd",
+    "--background-index",
+    "--function-arg-placeholders",
+    "--completion-style=detailed",
+    "--header-insertion=never",
+    "--clang-tidy",
+    "--offset-encoding=utf-8",
+  },
 })
+
+require("lspconfig").grammarly.setup({
+  filetypes = { "markdown", "tex" },
+  init_options = { clientId = "client_BaDkMgx4X19X9UxxYRCXZo" },
+})
+
+require("lspconfig").astro.setup({})
 
 lsp.setup()
 
@@ -63,44 +70,74 @@ local null_ls = require("null-ls")
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
-null_ls.setup({
-  on_attach = function(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
-      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = augroup,
-        buffer = bufnr,
-        callback = function()
-          -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-          -- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
-          vim.lsp.buf.format({ async = false })
-        end,
-      })
-    end
-  end,
-  sources = {
-    null_ls.builtins.diagnostics.mypy.with({
-      extra_args = function()
-        local virtual = os.getenv("VIRTUAL_ENV") or os.getenv("CONDA_DEFAULT_ENV") or "/usr"
-        return { "--python-executable", virtual .. "/bin/python3" }
-      end,
-    })
-  }
-})
+-- null_ls.setup({
+--   on_attach = function(client, bufnr)
+--     if client.supports_method("textDocument/formatting") then
+--       vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+--       vim.api.nvim_create_autocmd("BufWritePre", {
+--         group = augroup,
+--         buffer = bufnr,
+--         callback = function()
+--           -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+--           -- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
+--           vim.lsp.buf.format({ async = false })
+--         end,
+--       })
+--     end
+--   end,
+--   sources = {
+--     null_ls.builtins.diagnostics.mypy.with({
+--       extra_args = function()
+--         local virtual = os.getenv("VIRTUAL_ENV") or os.getenv("CONDA_DEFAULT_ENV") or "/usr"
+--         return { "--python-executable", virtual .. "/bin/python3" }
+--       end,
+--     })
+--   }
+-- })
 
 -- See mason-null-ls.nvim's documentation for more details:
 -- https://github.com/jay-babu/mason-null-ls.nvim#setup
 require("mason").setup()
-require("mason-null-ls").setup({
-  ensure_installed = nil,
-  automatic_installation = false, -- You can still set this to `true`
-  automatic_setup = true,
-})
+-- require("mason-null-ls").setup({
+--   ensure_installed = nil,
+--   automatic_installation = false, -- You can still set this to `true`
+--   automatic_setup = true,
+-- })
 
 -- Required when `automatic_setup` is true
 -- require("mason-null-ls").setup_handlers() -- Outdated ?
 
 require("mason-nvim-dap").setup({
-  automatic_setup = true,
+  ensure_installed = { "python" },
+  handlers = {
+    function(config)
+      -- all sources with no handler get passed here
+
+      -- Keep original functionality
+      require("mason-nvim-dap").default_setup(config)
+    end,
+    python = function(config)
+      config.adapters = {
+        type = "executable",
+        command = "/usr/bin/python3",
+        args = {
+          "-m",
+          "debugpy.adapter",
+        },
+      }
+      require("mason-nvim-dap").default_setup(config) -- don't forget this!
+    end,
+  },
 })
 -- require("mason-nvim-dap").setup_handlers({})
+
+-- Omnisharp/C#/Unity
+local pid = vim.fn.getpid()
+local omnisharp_bin = "/opt/omnisharp-roslyn/run"
+require("lspconfig").omnisharp.setup({
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  },
+  cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
+})
